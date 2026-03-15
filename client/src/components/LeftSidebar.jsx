@@ -21,9 +21,7 @@ export default function LeftSidebar({ privateRooms, activeRoom, onSelectRoom, on
       setEditMode(false);
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to update profile');
-    } finally {
-      setSaving(false);
-    }
+    } finally { setSaving(false); }
   };
 
   const getOtherParticipant = (room) =>
@@ -32,7 +30,9 @@ export default function LeftSidebar({ privateRooms, activeRoom, onSelectRoom, on
   const incomingRequests = pendingRequests?.filter(r => r.requestedBy?._id !== user?._id) || [];
 
   return (
-    <div className="flex flex-col h-full glass neon-border" style={{ borderRight: '1px solid rgba(6,182,212,0.1)' }}>
+    <div className="flex flex-col h-full"
+      style={{ background: 'rgba(15,23,42,0.85)', borderRight: '1px solid rgba(124,58,237,0.1)' }}>
+
       {/* Profile section */}
       <div className="p-4 border-b border-slate-800/60">
         <div className="flex items-center gap-3 cursor-pointer group" onClick={() => setShowProfile(!showProfile)}>
@@ -40,7 +40,8 @@ export default function LeftSidebar({ privateRooms, activeRoom, onSelectRoom, on
           <div className="flex-1 min-w-0">
             <p className="font-semibold text-white text-sm truncate" style={{ fontFamily: 'Syne,sans-serif' }}>{user?.username}</p>
             <p className="text-xs text-emerald-400 flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" style={{ boxShadow: '0 0 4px rgba(52,211,153,0.6)' }} />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block"
+                style={{ boxShadow: '0 0 4px rgba(52,211,153,0.6)' }} />
               Online
             </p>
           </div>
@@ -57,14 +58,19 @@ export default function LeftSidebar({ privateRooms, activeRoom, onSelectRoom, on
           <div className="mt-3 animate-fade-in">
             {editMode ? (
               <div className="space-y-2">
-                <input className="input-field text-sm py-2" placeholder="Username" value={profileForm.username} onChange={e => setProfileForm({ ...profileForm, username: e.target.value })} />
-                <textarea className="input-field text-sm py-2 resize-none" rows={2} placeholder="Bio (optional)" value={profileForm.bio} onChange={e => setProfileForm({ ...profileForm, bio: e.target.value })} />
-                <input className="input-field text-sm py-2" placeholder="Avatar URL (optional)" value={profileForm.avatar} onChange={e => setProfileForm({ ...profileForm, avatar: e.target.value })} />
+                <input className="input-field text-sm py-2" placeholder="Username"
+                  value={profileForm.username} onChange={e => setProfileForm({ ...profileForm, username: e.target.value })} />
+                <textarea className="input-field text-sm py-2 resize-none" rows={2} placeholder="Bio (optional)"
+                  value={profileForm.bio} onChange={e => setProfileForm({ ...profileForm, bio: e.target.value })} />
+                <input className="input-field text-sm py-2" placeholder="Avatar URL (optional)"
+                  value={profileForm.avatar} onChange={e => setProfileForm({ ...profileForm, avatar: e.target.value })} />
                 <div className="flex gap-2">
-                  <button onClick={handleSaveProfile} disabled={saving} className="flex-1 text-xs bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-semibold py-1.5 rounded-lg transition-all">
+                  <button onClick={handleSaveProfile} disabled={saving}
+                    className="flex-1 text-xs bg-violet-600 hover:bg-violet-500 text-white font-semibold py-1.5 rounded-lg transition-all">
                     {saving ? 'Saving...' : 'Save'}
                   </button>
-                  <button onClick={() => setEditMode(false)} className="flex-1 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 py-1.5 rounded-lg transition-all">
+                  <button onClick={() => setEditMode(false)}
+                    className="flex-1 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 py-1.5 rounded-lg transition-all">
                     Cancel
                   </button>
                 </div>
@@ -73,7 +79,7 @@ export default function LeftSidebar({ privateRooms, activeRoom, onSelectRoom, on
               <div className="space-y-1">
                 {user?.bio && <p className="text-xs text-slate-400 italic">"{user.bio}"</p>}
                 <p className="text-xs text-slate-500">{user?.email}</p>
-                <button onClick={() => setEditMode(true)} className="text-xs text-cyan-400 hover:text-cyan-300 transition-colors">
+                <button onClick={() => setEditMode(true)} className="text-xs text-violet-400 hover:text-violet-300 transition-colors">
                   Edit Profile
                 </button>
               </div>
@@ -86,7 +92,7 @@ export default function LeftSidebar({ privateRooms, activeRoom, onSelectRoom, on
       <div className="flex border-b border-slate-800/60">
         {['chats', 'requests'].map(tab => (
           <button key={tab}
-            className={`flex-1 py-2.5 text-xs font-semibold transition-all relative capitalize ${activeTab === tab ? 'text-cyan-400 border-b-2 border-cyan-400' : 'text-slate-500 hover:text-slate-300'}`}
+            className={`flex-1 py-2.5 text-xs font-semibold transition-all relative capitalize ${activeTab === tab ? 'text-violet-400 border-b-2 border-violet-400' : 'text-slate-500 hover:text-slate-300'}`}
             style={{ fontFamily: 'Syne,sans-serif' }}
             onClick={() => setActiveTab(tab)}>
             {tab}
@@ -103,28 +109,29 @@ export default function LeftSidebar({ privateRooms, activeRoom, onSelectRoom, on
       <div className="flex-1 overflow-y-auto">
         {activeTab === 'chats' ? (
           <div className="p-2 space-y-1">
-            {/* General room */}
             <div className={`sidebar-item ${activeRoom === 'general' ? 'active' : ''}`} onClick={onSelectGeneral}>
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-600 to-teal-600 flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-purple-600 flex items-center justify-center flex-shrink-0">
                 <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-semibold text-sm text-white truncate" style={{ fontFamily: 'Syne,sans-serif' }}>General Chat</p>
-                <p className="text-xs text-slate-500 truncate">Everyone can join</p>
+                <p className="font-semibold text-sm text-white truncate" style={{ fontFamily: 'Syne,sans-serif' }}>General</p>
+                <p className="text-xs text-slate-500 truncate">Everyone is synced here</p>
               </div>
             </div>
 
-            {/* Private rooms */}
             {privateRooms?.filter(r => r.status === 'accepted').map(room => {
               const other = getOtherParticipant(room);
               return (
-                <div key={room.roomId} className={`sidebar-item ${activeRoom === room.roomId ? 'active' : ''}`} onClick={() => onSelectRoom(room)}>
+                <div key={room.roomId} className={`sidebar-item ${activeRoom === room.roomId ? 'active' : ''}`}
+                  onClick={() => onSelectRoom(room)}>
                   <Avatar user={other} size="md" showStatus />
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-sm text-white truncate" style={{ fontFamily: 'Syne,sans-serif' }}>{other?.username || 'Unknown'}</p>
-                    <p className="text-xs text-slate-500 truncate">{room.lastMessage?.content || 'Start chatting'}</p>
+                    <p className="font-semibold text-sm text-white truncate" style={{ fontFamily: 'Syne,sans-serif' }}>
+                      {other?.username || 'Unknown'}
+                    </p>
+                    <p className="text-xs text-slate-500 truncate">{room.lastMessage?.content || 'Start syncing'}</p>
                   </div>
                   {!room.isPaid && room.messageCount >= 3 && (
                     <svg className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -136,20 +143,20 @@ export default function LeftSidebar({ privateRooms, activeRoom, onSelectRoom, on
             })}
 
             {(!privateRooms || privateRooms.filter(r => r.status === 'accepted').length === 0) && (
-              <p className="text-xs text-slate-600 text-center py-4 px-2">Click on an online user to start a private chat</p>
+              <p className="text-xs text-slate-600 text-center py-4 px-2">Click on an online user to start syncing</p>
             )}
           </div>
         ) : (
           <div className="p-2 space-y-2">
             {incomingRequests.length === 0
-              ? <p className="text-xs text-slate-600 text-center py-8 px-2">No pending chat requests</p>
+              ? <p className="text-xs text-slate-600 text-center py-8 px-2">No pending sync requests</p>
               : incomingRequests.map(room => (
                 <div key={room.roomId} className="bg-slate-800/40 rounded-xl p-3 space-y-2 border border-slate-700/40">
                   <div className="flex items-center gap-2">
                     <Avatar user={room.requestedBy} size="sm" showStatus />
                     <div>
                       <p className="text-sm font-semibold text-white">{room.requestedBy?.username}</p>
-                      <p className="text-xs text-slate-500">wants to chat</p>
+                      <p className="text-xs text-slate-500">wants to sync with you</p>
                     </div>
                   </div>
                   <div className="flex gap-2">

@@ -5,31 +5,24 @@ import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 
 export default function Register() {
-  const [form, setForm]               = useState({ username: '', email: '', password: '', confirmPassword: '' });
-  const [loading, setLoading]         = useState(false);
+  const [form, setForm] = useState({ username: '', email: '', password: '', confirmPassword: '' });
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
-  const navigate  = useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.username || !form.email || !form.password)
-      return toast.error('Please fill in all fields');
-    if (form.password !== form.confirmPassword)
-      return toast.error('Passwords do not match');
-    if (form.password.length < 6)
-      return toast.error('Password must be at least 6 characters');
-
+    if (!form.username || !form.email || !form.password) return toast.error('Please fill in all fields');
+    if (form.password !== form.confirmPassword) return toast.error('Passwords do not match');
+    if (form.password.length < 6) return toast.error('Password must be at least 6 characters');
     setLoading(true);
     try {
-      // NOTE: No hardcoded URL — axios baseURL is set in AuthContext from REACT_APP_SERVER_URL
       const { data } = await axios.post('/api/auth/register', {
-        username: form.username,
-        email:    form.email,
-        password: form.password
+        username: form.username, email: form.email, password: form.password
       });
       login(data.user, data.token);
-      toast.success('Account created successfully!');
+      toast.success('Welcome to Sync!');
       navigate('/');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Registration failed');
@@ -41,20 +34,19 @@ export default function Register() {
   return (
     <div className="auth-container">
       <div className="auth-card animate-fade-in">
-        {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 mb-3 animate-pulse-glow">
-            <svg className="w-7 h-7 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-violet-500/10 border border-violet-500/20 mb-3 animate-pulse-glow">
+            <svg className="w-7 h-7 text-violet-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <h1 className="text-2xl font-black text-white">ChatApp</h1>
+          <h1 className="text-3xl font-black text-white tracking-tight">Sync</h1>
+          <p className="text-slate-400 text-sm mt-1">Join the conversation</p>
         </div>
 
         <h2 className="text-xl font-bold text-white mb-6">Create Account</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Username */}
           <div>
             <label className="block text-sm font-medium text-slate-400 mb-1.5">Username</label>
             <div className="relative">
@@ -66,7 +58,6 @@ export default function Register() {
             </div>
           </div>
 
-          {/* Email */}
           <div>
             <label className="block text-sm font-medium text-slate-400 mb-1.5">Email</label>
             <div className="relative">
@@ -78,7 +69,6 @@ export default function Register() {
             </div>
           </div>
 
-          {/* Password */}
           <div>
             <label className="block text-sm font-medium text-slate-400 mb-1.5">Password</label>
             <div className="relative">
@@ -98,7 +88,6 @@ export default function Register() {
             </div>
           </div>
 
-          {/* Confirm Password */}
           <div>
             <label className="block text-sm font-medium text-slate-400 mb-1.5">Confirm Password</label>
             <div className="relative">
@@ -112,13 +101,13 @@ export default function Register() {
           </div>
 
           <button type="submit" className="btn-primary w-full flex items-center justify-center gap-2 mt-2" disabled={loading}>
-            {loading ? <><div className="w-4 h-4 border-2 border-slate-900 border-t-transparent rounded-full animate-spin" />Creating...</> : 'Create Account'}
+            {loading ? <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />Creating...</> : 'Create Account'}
           </button>
         </form>
 
         <p className="text-center text-slate-500 text-sm mt-6">
           Already have an account?{' '}
-          <Link to="/login" className="text-cyan-400 hover:text-cyan-300 font-medium transition-colors">Sign in</Link>
+          <Link to="/login" className="text-violet-400 hover:text-violet-300 font-medium transition-colors">Sign in</Link>
         </p>
       </div>
     </div>
