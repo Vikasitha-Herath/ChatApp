@@ -45,12 +45,12 @@ app.use('/api/payment', require('./routes/payment'));
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({
-    success: true,
-    message: 'ChatApp API is running',
-    environment: process.env.NODE_ENV || 'development',
-    timestamp: new Date()
-  });
+  res.json({ success: true, message: 'ChatApp API is running', timestamp: new Date() });
+});
+
+// Root route
+app.get('/', (req, res) => {
+  res.json({ success: true, message: 'ChatApp Server', version: '1.0.0' });
 });
 
 // 404 handler
@@ -70,8 +70,8 @@ require('./socket')(io);
 // ─── DATABASE CONNECTION ──────────────────────────────────────────────────────
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/chatapp', {
-      serverSelectionTimeoutMS: 10000,
+    const conn = await mongoose.connect(process.env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 15000,
     });
     console.log(`✅ MongoDB connected: ${conn.connection.host}`);
   } catch (error) {
@@ -81,11 +81,12 @@ const connectDB = async () => {
 };
 
 // ─── START SERVER ─────────────────────────────────────────────────────────────
+// MUST bind to 0.0.0.0 on Railway — not localhost or 127.0.0.1
 const PORT = process.env.PORT || 5000;
 
 connectDB().then(() => {
-  server.listen(PORT, () => {
-    console.log(`🚀 ChatApp server running on port ${PORT}`);
+  server.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Server running on 0.0.0.0:${PORT}`);
     console.log(`📡 Socket.IO ready`);
     console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
     console.log(`🔗 Allowed origins: ${allowedOrigins.join(', ')}`);
