@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+* { box-sizing: border-box; }
+
+.admin-body {
+  font-family: 'DM Sans', sans-serif;
+  background: #0a0f1e;
+  color: #e2e8f0;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #1e293b; }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #7c3aed; }
+
+.admin-card {
+  background: rgba(15,23,42,0.8);
+  border: 1px solid rgba(124,58,237,0.12);
+  border-radius: 16px; padding: 24px;
+  backdrop-filter: blur(16px);
+}
+
+.stat-card {
+  background: rgba(15,23,42,0.9);
+  border: 1px solid rgba(124,58,237,0.15);
+  border-radius: 16px; padding: 20px;
+  transition: all 0.2s ease;
+}
+.stat-card:hover {
+  border-color: rgba(124,58,237,0.4);
+  box-shadow: 0 0 20px rgba(124,58,237,0.08);
+  transform: translateY(-2px);
+}
+
+.admin-table { width: 100%; border-collapse: collapse; }
+.admin-table th {
+  text-align: left; padding: 12px 16px;
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;
+  border-bottom: 1px solid rgba(124,58,237,0.1);
+  background: rgba(15,23,42,0.5);
+}
+.admin-table td {
+  padding: 12px 16px; font-size: 14px; color: #cbd5e1;
+  border-bottom: 1px solid rgba(30,41,59,0.6);
+  vertical-align: middle;
+}
+.admin-table tr:hover td { background: rgba(124,58,237,0.04); }
+
+.btn-admin-primary {
+  background: #7c3aed; color: white; border: none;
+  padding: 8px 16px; border-radius: 10px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Syne', sans-serif;
+}
+.btn-admin-primary:hover   { background: #6d28d9; transform: translateY(-1px); }
+.btn-admin-primary:active  { transform: scale(0.97); }
+.btn-admin-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.btn-admin-secondary {
+  background: rgba(124,58,237,0.1); color: #a78bfa;
+  border: 1px solid rgba(124,58,237,0.2);
+  padding: 8px 16px; border-radius: 10px;
+  font-size: 13px; font-weight: 500; cursor: pointer;
+  transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-admin-secondary:hover    { background: rgba(124,58,237,0.2); }
+.btn-admin-secondary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-danger {
+  background: rgba(239,68,68,0.1); color: #f87171;
+  border: 1px solid rgba(239,68,68,0.2);
+  padding: 6px 12px; border-radius: 8px;
+  font-size: 12px; font-weight: 500; cursor: pointer;
+  transition: all 0.2s; display: inline-flex; align-items: center; gap: 4px;
+}
+.btn-danger:hover { background: rgba(239,68,68,0.2); }
+
+.btn-success {
+  background: rgba(16,185,129,0.1); color: #34d399;
+  border: 1px solid rgba(16,185,129,0.2);
+  padding: 6px 12px; border-radius: 8px;
+  font-size: 12px; font-weight: 500; cursor: pointer;
+  transition: all 0.2s; display: inline-flex; align-items: center; gap: 4px;
+}
+.btn-success:hover { background: rgba(16,185,129,0.2); }
+
+.admin-input {
+  width: 100%; background: rgba(15,23,42,0.8);
+  border: 1px solid #334155; border-radius: 10px;
+  padding: 10px 14px; color: white; font-size: 14px;
+  outline: none; transition: border-color 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.admin-input:focus { border-color: #7c3aed; }
+.admin-input::placeholder { color: #475569; }
+
+.admin-select {
+  background: rgba(15,23,42,0.8); border: 1px solid #334155;
+  border-radius: 10px; padding: 8px 12px; color: white;
+  font-size: 13px; outline: none; cursor: pointer;
+  transition: border-color 0.2s; font-family: 'DM Sans', sans-serif;
+}
+.admin-select:focus { border-color: #7c3aed; }
+.admin-select option { background: #1e293b; }
+
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+.badge-active   { background: rgba(16,185,129,0.15);  color: #34d399; border: 1px solid rgba(16,185,129,0.2);  }
+.badge-inactive { background: rgba(100,116,139,0.15); color: #94a3b8; border: 1px solid rgba(100,116,139,0.2); }
+.badge-pending  { background: rgba(245,158,11,0.15);  color: #fbbf24; border: 1px solid rgba(245,158,11,0.2);  }
+.badge-paid     { background: rgba(124,58,237,0.15);  color: #a78bfa; border: 1px solid rgba(124,58,237,0.2);  }
+.badge-danger   { background: rgba(239,68,68,0.15);   color: #f87171; border: 1px solid rgba(239,68,68,0.2);   }
+
+.admin-modal-overlay {
+  position: fixed; inset: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: center; padding: 16px;
+  background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+}
+.admin-modal {
+  background: #0f172a; border: 1px solid rgba(124,58,237,0.2);
+  border-radius: 20px; padding: 28px; width: 100%; max-width: 520px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+}
+
+.admin-sidebar {
+  width: 240px; min-height: 100vh; background: rgba(8,12,24,0.98);
+  border-right: 1px solid rgba(124,58,237,0.1);
+  display: flex; flex-direction: column;
+  position: fixed; left: 0; top: 0; bottom: 0; z-index: 20;
+}
+.admin-sidebar-item {
+  display: flex; align-items: center; gap: 10px; padding: 10px 16px;
+  border-radius: 10px; cursor: pointer; transition: all 0.2s; color: #64748b;
+  font-size: 13px; font-weight: 500; margin: 1px 8px; text-decoration: none;
+  border: 1px solid transparent;
+}
+.admin-sidebar-item:hover  { background: rgba(124,58,237,0.08); color: #a78bfa; }
+.admin-sidebar-item.active { background: rgba(124,58,237,0.15); color: #a78bfa; border-color: rgba(124,58,237,0.2); }
+.admin-sidebar-item svg    { width: 16px; height: 16px; flex-shrink: 0; }
+
+.admin-main    { margin-left: 240px; min-height: 100vh; background: #0a0f1e; }
+.admin-topbar  {
+  height: 56px; background: rgba(8,12,24,0.98);
+  border-bottom: 1px solid rgba(124,58,237,0.1);
+  display: flex; align-items: center; padding: 0 24px; gap: 12px;
+  position: sticky; top: 0; z-index: 10;
+}
+.admin-content { padding: 24px; }
+
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);} }
+@keyframes spin   { to{transform:rotate(360deg);} }
+.animate-in { animation: fadeIn 0.3s ease-out; }

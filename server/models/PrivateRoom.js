@@ -1,33 +1,21 @@
 const mongoose = require('mongoose');
 
 const privateRoomSchema = new mongoose.Schema({
-  participants: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  }],
-  roomId: { type: String, unique: true, required: true },
-  status: {
-    type: String,
-    enum: ['pending', 'accepted', 'rejected', 'blocked'],
-    default: 'pending'
-  },
-  requestedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
+  participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }],
+  roomId:      { type: String, unique: true, required: true },
+  status:      { type: String, enum: ['pending','accepted','rejected','blocked'], default: 'pending' },
+  requestedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   messageCount: { type: Number, default: 0 },
-  isPaid: { type: Boolean, default: false },
+  isPaid:      { type: Boolean, default: false },
   paymentInfo: {
     stripePaymentIntentId: String,
-    paidAt: Date,
-    amount: Number,
-    paidBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    paidAt:  Date,
+    amount:  Number,
+    paidBy:  { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
   },
   lastMessage: {
-    content: String,
-    sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    content:   String,
+    sender:    { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     createdAt: Date
   }
 }, { timestamps: true });

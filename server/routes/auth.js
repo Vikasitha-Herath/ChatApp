@@ -1,8 +1,8 @@
-const express = require('express');
-const router = express.Router();
-const jwt = require('jsonwebtoken');
+const express    = require('express');
+const router     = express.Router();
+const jwt        = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
-const User = require('../models/User');
+const User       = require('../models/User');
 const { protect } = require('../middleware/auth');
 
 const generateToken = (id) =>
@@ -26,7 +26,7 @@ router.post('/register', async (req, res) => {
       const field = existing.email === email ? 'Email' : 'Username';
       return res.status(400).json({ success: false, message: `${field} already exists` });
     }
-    const user = await User.create({ username, email, password });
+    const user  = await User.create({ username, email, password });
     const token = generateToken(user._id);
     res.status(201).json({
       success: true, message: 'Registration successful', token,
@@ -46,6 +46,8 @@ router.post('/login', async (req, res) => {
     const user = await User.findOne({ email }).select('+password');
     if (!user || !(await user.comparePassword(password)))
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
+    if (user.isBanned)
+      return res.status(403).json({ success: false, message: 'Your account has been banned. Contact support.' });
     user.isOnline = true;
     user.lastSeen = new Date();
     await user.save();
@@ -67,7 +69,7 @@ router.post('/forgot-password', async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ success: false, message: 'No account found with that email' });
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    user.resetPasswordOTP = otp;
+    user.resetPasswordOTP       = otp;
     user.resetPasswordOTPExpiry = new Date(Date.now() + 10 * 60 * 1000);
     await user.save();
     console.log(`🔑 OTP for ${email}: ${otp}`);
@@ -81,18 +83,17 @@ router.post('/forgot-password', async (req, res) => {
           <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#0f172a;color:#e2e8f0;padding:40px;border-radius:12px;">
             <h1 style="color:#7c3aed;text-align:center;margin-bottom:30px;">⚡ Sync</h1>
             <h2 style="color:#e2e8f0;">Password Reset Request</h2>
-            <p style="color:#94a3b8;">Your OTP code for password reset:</p>
+            <p style="color:#94a3b8;">Your OTP code:</p>
             <div style="background:#1e293b;border:2px solid #7c3aed;border-radius:8px;padding:20px;text-align:center;margin:20px 0;">
               <span style="font-size:36px;font-weight:bold;color:#7c3aed;letter-spacing:8px;">${otp}</span>
             </div>
-            <p style="color:#94a3b8;">This OTP expires in <strong style="color:#f59e0b;">10 minutes</strong>.</p>
-            <p style="color:#94a3b8;">If you didn't request this, ignore this email.</p>
+            <p style="color:#94a3b8;">Expires in <strong style="color:#f59e0b;">10 minutes</strong>.</p>
             <hr style="border-color:#1e293b;margin:30px 0;">
             <p style="color:#475569;font-size:12px;text-align:center;">Sync — Real-time messaging, reimagined</p>
           </div>`
       });
     } catch (emailErr) {
-      console.error('Email send error:', emailErr.message);
+      console.error('Email error:', emailErr.message);
     }
     res.json({ success: true, message: 'OTP sent to your email address' });
   } catch (error) {
@@ -121,13 +122,12 @@ router.post('/reset-password', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Password must be at least 6 characters' });
     const user = await User.findOne({ email, resetPasswordOTP: otp, resetPasswordOTPExpiry: { $gt: Date.now() } });
     if (!user) return res.status(400).json({ success: false, message: 'Invalid or expired OTP' });
-    user.password = newPassword;
-    user.resetPasswordOTP = undefined;
+    user.password               = newPassword;
+    user.resetPasswordOTP       = undefined;
     user.resetPasswordOTPExpiry = undefined;
     await user.save();
     res.json({ success: true, message: 'Password reset successfully' });
   } catch (error) {
-    console.error('Reset password error:', error);
     res.status(500).json({ success: false, message: 'Server error' });
   }
 });
@@ -150,7 +150,7 @@ router.put('/profile', protect, async (req, res) => {
       if (existing) return res.status(400).json({ success: false, message: 'Username already taken' });
       user.username = username;
     }
-    if (bio !== undefined) user.bio = bio;
+    if (bio    !== undefined) user.bio    = bio;
     if (avatar !== undefined) user.avatar = avatar;
     await user.save();
     res.json({ success: true, user, message: 'Profile updated successfully' });
